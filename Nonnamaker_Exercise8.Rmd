@@ -1,0 +1,84 @@
+---
+title: "Nonnamaker_Exercise8"
+output: html_document
+---
+
+# Question 1
+
+One cool summary plot that media outlets generate to summarize a game, in this case basketball, is a line graph depicting the cumulative score for each team as a function of time in the game (see below).
+
+Using the score-by-score information from this game summarized in “UWvMSU_1-22-13.txt” generate a graph similar to the one I show above.
+
+```{r include = FALSE}
+rm(list=ls())
+setwd("/Users/emilynonnamaker/Box/personalStuff/School/PhD/biocomputingFall2018/Biocomp-Fall2018-181026-Exercise8-master")
+badge <- read.table("UWvMSU_1-22-13.txt", header = T)
+str(badge)
+```
+
+```{r}
+str(badge)
+
+pvscoreMSU<-0
+pvscoreUW<-0
+
+
+for (i in 1:nrow(badge)){
+  if(badge$team[i]=="MSU"){
+  pvscoreMSU <- pvscoreMSU+badge$score[i]
+  badge$cumscore[i] <- pvscoreMSU 
+  }else{
+    pvscoreUW <- pvscoreUW+badge$score[i]
+    badge$cumscore[i] <- pvscoreUW
+  }
+}
+
+badge$cumscore
+str(badge)
+
+MSU <- (subset(badge, badge$team=="MSU"))
+UW <- (subset(badge, badge$team=="UW"))
+
+plot(MSU$cumscore, MSU$time, col="red",type='l')
+lines(UW$cumscore, UW$time, col="blue")
+```
+
+# Question 2:
+
+Write a game called “guess my number”. The computer will generate a random number between 1 and 100. The user types in a number and the computer replies “lower” if the random number is lower than the guess, “higher” if the random number is higher, and “correct!” if the guess is correct. The player can continue guessing until they get it right.
+Here’s an example game where the random number is 79. User inputs are italicized.
+I'm thinking of a number 1-100...
+Guess: 40
+Higher
+Guess: 70 
+Higher
+Guess: 80
+Lower
+Guess: 77
+Higher
+Guess: 79
+Correct!
+A couple tips on this one:
+• take a look at the Input/Output reference I gave you for how to get input from the user
+• sample() is a function that allows for a random selection from a vector containing a set of integers
+• beware of “infinite loops”! To end such a problem, in Rstudio put your cursor in the console and press the esc key.
+
+```{r}
+number <- sample(1:100, 1) # get a random number. 
+number # check and see what your random number is if you want to cheat. 
+guess <- function(guess){
+  if (guess > number){
+    print("Lower")
+  }else{ 
+      if (guess < number){
+    print("Higher")
+    }else{ 
+      if (guess == number)
+        print( "Correct!")
+
+    }
+  }
+}
+guess( ) #your guess goes in here. 
+
+```
